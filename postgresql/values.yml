@@ -2,5 +2,5 @@ global:
   postgresql:
     postgresqlUsername: flask-user
     postgresqlDatabase: flask-db
-    #servicePort: 5812
+    servicePort: 5812
 initdbScriptsConfigMap: visitors-init-script
