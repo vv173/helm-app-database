@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: visitors-init-script
+data:
+  visitors_db.sql: |
+    CREATE TABLE IF NOT EXISTS visitors (
+      key_string VARCHAR(20),
+      value INTEGER DEFAULT 0,
+      PRIMARY KEY (key_string),
+      UNIQUE (key_string)
+    );
+
+    INSERT INTO visitors (key_string, value) VALUES ('count', 0) ON CONFLICT DO NOTHING;
