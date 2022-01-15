@@ -1,0 +1,49 @@
+# Default values for Chart-Flask.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: v17v3/flaskapp
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+podAnnotations: {}
+
+postgresql:
+  user: flask-user
+  host: postgres-postgresql
+  port: "5812"
+  db: flask-db
+  secret:
+    name: postgres-postgresql
+    key: postgresql-password
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: my.k8s.app
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+  resources:
+  limits: {}
+  requests: {}

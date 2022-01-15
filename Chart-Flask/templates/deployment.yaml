@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "Chart-Flask.fullname" . }}
+  labels:
+    app: flask
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: flask
+      tier: frontend
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: flask
+        tier: frontend
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - name: flask
+              containerPort: 5000
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: POSTGRES_USER
+            value: {{ quote .Values.postgresql.user }}
+          - name: POSTGRES_HOST
+            value: {{ quote .Values.postgresql.host }}
+          - name: POSTGRES_PORT
+            value: {{ quote .Values.postgresql.port }}
+          - name: POSTGRES_DB_NAME
+            value: {{ quote .Values.postgresql.db }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ quote .Values.postgresql.secret.name }}
+                key: {{ quote .Values.postgresql.secret.key }}

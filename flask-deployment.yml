@@ -5,8 +5,7 @@ metadata:
   labels:
     app: flask
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/app-root: /api/count
+    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   defaultBackend:
     service:
@@ -17,14 +16,7 @@ spec:
   - host: my.k8s.app
     http:
       paths:
-      - path: /api/count
-        pathType: Prefix
-        backend:
-          service:
-            name: flask
-            port:
-              number: 80
-      - path: /api/count/add
+      - path: /
         pathType: Prefix
         backend:
           service:
@@ -69,7 +61,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: v17v3/flaskapp:v1.2
+      - image: v17v3/flaskapp:v1.4
         name: flask
         resources:
           limits:
@@ -95,7 +87,3 @@ spec:
         ports:
         - containerPort: 5000
           name: flask
-      volumes:
-      - name: flask-persistent-storage
-        persistentVolumeClaim:
-          claimName: flask-pv-claim

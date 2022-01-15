@@ -1,0 +1,8 @@
+apiVersion: v2
+name: flask
+description: A Helm chart for Kubernetes with Flask
+
+
+type: application
+version: 0.1.1
+appVersion: "v1.4"

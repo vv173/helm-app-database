@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "Chart-Flask.fullname" . }}
+  labels:
+    app: flask
+    tier: frontend
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: flask
+      port: {{ .Values.service.port }}
+      targetPort: 5000
+      protocol: TCP
+  selector:
+    app: flask
+    tier: frontend
